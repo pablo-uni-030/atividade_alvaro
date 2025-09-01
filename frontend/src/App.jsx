@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import LoginPage from "./pages/LoginPage";
+import AuthorizationPage from "./pages/AuthorizationPage";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userInfo, setUserInfo] = useState({
+    email: null,
+    authorization: null,
+  });
+
+  const port = 3000;
+
+  async function validateUser(form, email, password) {
+    form.preventDefault();
+
+    setUserInfo((prev) => ({ ...prev, email: email }));
+    setUserInfo((prev) => ({ ...prev, authorization: "loading" }));
+
+    try {
+      const response = await fetch(`http://localhost:${port}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      if (response.status !== 200) {
+        console.log("Erro na requisição: " + response.status);
+        return; // Retorne para não processar a resposta
+      }
+
+      const data = await response.json();
+
+      if (data.authorization === "authorized") {
+        setUserInfo((prev) => ({ ...prev, authorization: "authorized" }));
+      }
+    } catch (e) {
+      setUserInfo((prev) => ({ ...prev, authorization: null }));
+      console.log(e);
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="flex flex-col justify-center items-center m-15">
+      {userInfo.authorization === "authorized" ? (
+        <AuthorizationPage userInfo={userInfo}/>
+      ) : (
+        <LoginPage validateUser={validateUser} userInfo={userInfo} />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
