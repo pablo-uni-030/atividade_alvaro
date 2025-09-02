@@ -8,8 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 // Usuário fixo
-const EMAIL = "feijao_puro@gmail.com";
-const PASSWORD = "fazol123";
+const EMAIL = "lula@gmail.com";
+const PASSWORD = "feijaopuro";
 
 // Endpoint POST de login
 app.post("/login", (req, res) => {

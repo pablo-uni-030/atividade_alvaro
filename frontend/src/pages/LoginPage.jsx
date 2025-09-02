@@ -14,6 +14,7 @@ function LoginPage(props) {
   });
 
   return (
+    <div className="flex flex-col justify-center items-center">
       <form
         onSubmit={(form) =>
           props.validateUser(
@@ -41,7 +42,7 @@ function LoginPage(props) {
             <input
               type="email"
               id="userEmail"
-              className={`border-[2px] border-slate-300 rounded text-[14pt] p-3 focus:border-slate-500 transition duration-200 cursor-pointer w-full ${
+              className={`border-[1px] border-slate-300 rounded text-[14pt] p-3 focus:border-slate-500 transition duration-200 cursor-pointer w-full ${
                 emailInputConfig.containsText && "border-slate-500"
               }`}
               onFocus={() =>
@@ -73,7 +74,7 @@ function LoginPage(props) {
             <input
               type={passwordInputConfig.showPassword ? "text" : "password"}
               id="userPassword"
-              className={`border-[2px] border-slate-300 rounded text-[14pt] p-3 focus:border-slate-500 transition duration-200 cursor-pointer w-full ${
+              className={`border-[1px] border-slate-300 rounded text-[14pt] p-3 focus:border-slate-500 transition duration-200 cursor-pointer w-full ${
                 passwordInputConfig.containsText && "border-slate-500"
               }`}
               onFocus={() =>
@@ -135,6 +136,7 @@ function LoginPage(props) {
 
         <h2 className="italic text-slate-700 text-center">Feito por: João Lucas & Pablo</h2>
       </form>
+      </div>
   )
 }
 
